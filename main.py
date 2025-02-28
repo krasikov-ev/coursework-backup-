@@ -17,16 +17,16 @@ ydklient = APIYDClient(YDtoken)
 
 def save_VKphotos_in_YD(user_VK_id: int, PYDtoken: str, photos_quantity: int = 5, album_id: str = 'profile', folder_name: str = '', rewrite_results: str = 'w') -> NoReturn:
     """
-    Функция получает список фотографий с профиля {user_VK_id} ВК. 
-    Для имени фотографии используется количество лайков и, в случае их дублирования, дата загрузки.
+    Функция получает список фотографий с профиля {user_VK_id} ВК.     
     Из полученного списка фотографии в количестве {photos_quantity} сохраняется в папку с именем {album_id} на ЯД.
+    Для имени фотографии используется количество лайков и, в случае их дублирования, дата загрузки.
     Информация о сохранённых фотографиях записывается в results.json.
 
     Параметры:
         user_VK_id (int): ИД пользователя ВК.
         PYDtoken (str): Токен для VK API.
         photos_quantity (int): Количество фотографий для загрузки (по умолчанию 5).
-        album_id (str): Имя альюома для загрузки. По умолчанию 'profile'. Можно использовать 'wall' или ид пользлвательского альбома.
+        album_id (str): Имя альюома для загрузки. По умолчанию 'profile'. Можно использовать 'wall' или ид пользовательского альбома.
         folder_name (str): Имя папки для загрузки фото на Яндекс Диске. По умолчанию равно названию альбома ВК.
         rewrite_results (str): Режим записи файла results.json. По умолчанию 'w'. При вызове из функции save_other_VKphotos_in_YD - 'a'.
     """
@@ -35,11 +35,12 @@ def save_VKphotos_in_YD(user_VK_id: int, PYDtoken: str, photos_quantity: int = 5
     # Получаем список фотографий пользователя:   
     photos_dict = vkklient.photos_write(user_VK_id, album_id)
     # Проверяем количество фотографий в нём:
+    if len(photos_dict) == 0:
+        print('Нет данных для заполнения')
+        return  None
     print(f'В альбоме {album_id} {len(photos_dict)} фотографй')
     if len(photos_dict) < photos_quantity:
-        photos_quantity = len(photos_dict)
-    if len(photos_dict) == 0:
-        print(f'В альбоме {album_id} нет фотографй') 
+        photos_quantity = len(photos_dict)    
     # Созжаём на ЯД папку {folder_name}:
     ydklient.create_folder(folder_name)
     # Сохраняем {photos_quantity} фотографий в папку {folder_name} и заполняем result_list для выврода в result.json :
@@ -69,7 +70,7 @@ def save_other_VKphotos_in_YD(user_VK_id: int, PYDtoken: str, photos_quantity: i
         user_VK_id (int): ИД пользователя ВК.
         PYDtoken (str): Токен для VK API.
         photos_quantity (int): Количество фотографий для загрузки для каждого альбома(по умолчанию 5).
-        all_albums (bool): Обрабатывать служебные альбомы (profile и wall). По умолчанию False
+        all_albums (bool): Обрабатывать служебные альбомы (profile и wall). По умолчанию False - не обрабатывать.
     """
     with open("results.json", 'w', encoding='utf-8') as f:
         pass
@@ -89,8 +90,8 @@ def save_other_VKphotos_in_YD(user_VK_id: int, PYDtoken: str, photos_quantity: i
    
 
 
-save_VKphotos_in_YD(5977413, YDtoken, 5, 'profile', 'ttt')
-# save_other_VKphotos_in_YD(192276093, YDtoken, 2 )
+# save_VKphotos_in_YD(192276093, YDtoken, 5, 'profile', 'ttt')
+save_other_VKphotos_in_YD(192276093, YDtoken, 2 )
     
     # 5977413 ка
     # 192276093 фаd

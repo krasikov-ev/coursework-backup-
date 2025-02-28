@@ -24,11 +24,17 @@ class APIVKClient:
         
     def photos_write(self, owner_id, album_id = 'profile'):
         """Записывает и возвращает необходимую далее информацию о всех фото альбома в photos_dict"""
-        data = self.photos_get(owner_id, album_id)       
+        response = self.photos_get(owner_id, album_id)
+        if  response.status_code != 200:
+            print(f'Ошибка {response.status_code} при создании файла')
+            return 0
+        if list(response.json().keys())[0] == 'error':
+            print (f'Ошибка {response.json()['error']['error_msg']}')
+            return {}        
         photos_dict = {}
-        # size_value_dict - порядок сортировки для типа фотографий
+        # size_value_dict - порядок сортировки для типа фотографий от большего к меньшему
         size_value_dict = {'w': 1, 'z': 2, 'y': 3, 'x': 4, 'r': 5, 'q': 6, 'p': 7, 'm': 8, 'o': 9,'s': 10}
-        for photo in data.json()["response"]["items"]:
+        for photo in response.json()["response"]["items"]:
             photos_dict[photo["id"]] = {
                 "likes_qty": photo["likes"]["count"],
                 "date":  time.strftime("%Y-%m-%d--%H-%M-%S", time.gmtime(photo["date"])),
@@ -53,17 +59,17 @@ class APIVKClient:
                     }
         else:
             print ('Нет дополнительных альбомов')
-            return 0       
+            return {}      
         return albums_dict
        
         
         
 
 
-if __name__ == '__main__':
+# if __name__ == '__main__':
    
     
-    vkklient.photos_write('')
+#     vkklient.photos_write('')
     # vkklient.photos_get('')
     # vkklient.get_albums ('')
     # print(vkklient.photos_write('', ))

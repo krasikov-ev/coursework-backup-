@@ -24,11 +24,8 @@ class APIYDClient:
             print(response.text)
 
     def resource_upload(self, file_name, file_url, folder_name):
-        """Создаёт в папке {folder_name} на ЯД файл с именем {file_name}.png из картинки по адресу {file_url}.
-        Для записи используется временный файл tech_image.png"""
-        response_t = requests.get(file_url)
-        with open('tech_image.png', 'wb') as f:
-            f.write(response_t.content)       
+        """Создаёт в папке {folder_name} на ЯД файл с именем {file_name}.png из картинки по адресу {file_url}."""       
+        response_pict = requests.get(file_url)       
         YD_folder_for_upload_Url = f'{self.YD_Base_Url}/v1/disk/resources/upload'
         params = {'path': f'{folder_name}/{file_name}.png'}
         headers = {"Authorization": f'OAuth {self.token}'}
@@ -36,9 +33,10 @@ class APIYDClient:
         if response.status_code == 200:
             url_for_upload = response.json()["href"]            
         else:
-            print(f'Ошибка {response.status_code}')
-        with open('tech_image.png', 'rb') as f:
-            response_put = requests.put(url_for_upload, files={'file': f})
+            print(f'Ошибка {response.status_code} при получении ссылки для создания файла')        
+        response_put = requests.put(url_for_upload, data=response_pict.content)
+        if  response_put.status_code != 201:
+            print(f'Ошибка {response_put.status_code} при создании файла')
 
     
         
@@ -47,10 +45,10 @@ class APIYDClient:
 
 
 
-if __name__ == '__main__':
+# if __name__ == '__main__':
   
    
    
-    ydklient = APIYDClient(YDtoken)
-    ydklient.create_folder(YD_folder_name)
-    ydklient.resource_upload('337', file_url, YD_folder_name)
+#     ydklient = APIYDClient(YDtoken)
+#     ydklient.create_folder(YD_folder_name)
+#     ydklient.resource_upload('337', file_url, YD_folder_name)
