@@ -46,7 +46,7 @@ def save_VKphotos_in_YD(user_VK_id: int, PYDtoken: str, photos_quantity: int = 5
     # Сохраняем {photos_quantity} фотографий в папку {folder_name} и заполняем result_list для выврода в result.json :
     result_list = []
     photo_likes_qty = []
-    for photo_id in tqdm(list(photos_dict.keys())[:photos_quantity], desc = 'the file upload process', colour = 'CYAN', position=0, leave=True):        
+    for photo_id in tqdm(list(photos_dict.keys())[:photos_quantity], desc = 'the file upload process', colour = 'CYAN', position=0, leave=True):
         # Определяем название файла (кол-во лайков или кол-во лайков+дата загрузки)
         if photos_dict[photo_id]["likes_qty"] in photo_likes_qty:
             file_name = f'{photos_dict[photo_id]["likes_qty"]}-{photos_dict[photo_id]["date"]}'
@@ -59,7 +59,7 @@ def save_VKphotos_in_YD(user_VK_id: int, PYDtoken: str, photos_quantity: int = 5
     # Записываеи результат в results.json:   
     with open("results.json", rewrite_results, encoding='utf-8') as f:
         json.dump(result_list, f, ensure_ascii=False, indent=4)
-        print('Файл results.json заполнен')
+        print('Файлы записаны в results.json')
 
 def save_other_VKphotos_in_YD(user_VK_id: int, PYDtoken: str, photos_quantity: int = 5, all_albums: bool = False) -> NoReturn:
     """
@@ -90,8 +90,6 @@ def save_other_VKphotos_in_YD(user_VK_id: int, PYDtoken: str, photos_quantity: i
    
 
 
-# save_VKphotos_in_YD(192276093, YDtoken, 5, 'profile', 'ttt')
-save_other_VKphotos_in_YD(192276093, YDtoken, 2 )
-    
-    # 5977413 ка
-    # 192276093 фаd
+# save_VKphotos_in_YD(__, YDtoken, 5, 'profile', 'some_folder')
+# save_other_VKphotos_in_YD(__, YDtoken, 3 )
+ 

@@ -15,7 +15,7 @@ class APIYDClient:
         params = {'path': folder_name}
         headers = {"Authorization": f'OAuth {self.token}'}
         response = requests.put(YD_create_folder_URL, params=params, headers=headers)
-        if response.status_code == 201:            
+        if response.status_code == 201:                       
             print (f'Папка {folder_name} создана {datetime.datetime.now()}')
         elif response.status_code == 409:
             print (f'Папка {folder_name} уже была создана ранее')
@@ -43,12 +43,3 @@ class APIYDClient:
         
 
 
-
-
-# if __name__ == '__main__':
-  
-   
-   
-#     ydklient = APIYDClient(YDtoken)
-#     ydklient.create_folder(YD_folder_name)
-#     ydklient.resource_upload('337', file_url, YD_folder_name)

@@ -63,15 +63,3 @@ class APIVKClient:
         return albums_dict
        
         
-        
-
-
-# if __name__ == '__main__':
-   
-    
-#     vkklient.photos_write('')
-    # vkklient.photos_get('')
-    # vkklient.get_albums ('')
-    # print(vkklient.photos_write('', ))
-
-
